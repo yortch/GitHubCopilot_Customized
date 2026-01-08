@@ -106,7 +106,12 @@ export default function Cart() {
                               type="number"
                               min="1"
                               value={item.quantity}
-                              onChange={(e) => updateQuantity(item.productId, parseInt(e.target.value) || 1)}
+                              onChange={(e) => {
+                                const value = parseInt(e.target.value);
+                                if (!isNaN(value) && value >= 1) {
+                                  updateQuantity(item.productId, value);
+                                }
+                              }}
                               className={`w-16 px-2 py-1 text-center ${darkMode ? 'bg-gray-700 text-light border-gray-600' : 'bg-white text-gray-800 border-gray-300'} border rounded transition-colors duration-300`}
                             />
                           </div>
@@ -173,7 +178,7 @@ export default function Cart() {
                 
                 {appliedDiscount > 0 && (
                   <div className="flex justify-between">
-                    <span className={`${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Discount({Math.round(appliedDiscount * 100)}%)</span>
+                    <span className={`${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Discount ({Math.round(appliedDiscount * 100)}%)</span>
                     <span className="text-red-500 font-medium">-${discountAmount.toFixed(2)}</span>
                   </div>
                 )}
