@@ -6,6 +6,8 @@ import { Order } from './models/order';
 import { OrderDetail } from './models/orderDetail';
 import { Delivery } from './models/delivery';
 import { OrderDetailDelivery } from './models/orderDetailDelivery';
+import { User } from './models/user';
+import bcrypt from 'bcryptjs';
 
 // Suppliers
 export const suppliers: Supplier[] = [
@@ -290,5 +292,30 @@ export const orderDetailDeliveries: OrderDetailDelivery[] = [
         deliveryId: 2,
         quantity: 20,
         notes: "Delivery"
+    }
+];
+
+// Users - passwords are hashed with bcrypt (password: 'password123')
+export const users: User[] = [
+    {
+        userId: 1,
+        email: "admin@github.com",
+        passwordHash: bcrypt.hashSync("password123", 10),
+        isAdmin: true,
+        createdAt: new Date("2024-01-01T00:00:00Z")
+    },
+    {
+        userId: 2,
+        email: "user@example.com",
+        passwordHash: bcrypt.hashSync("password123", 10),
+        isAdmin: false,
+        createdAt: new Date("2024-01-15T00:00:00Z")
+    },
+    {
+        userId: 3,
+        email: "manager@github.com",
+        passwordHash: bcrypt.hashSync("password123", 10),
+        isAdmin: true,
+        createdAt: new Date("2024-02-01T00:00:00Z")
     }
 ];
