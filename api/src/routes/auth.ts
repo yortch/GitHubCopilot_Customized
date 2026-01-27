@@ -119,7 +119,10 @@ import crypto from 'crypto';
 const router = express.Router();
 
 // JWT secret (in production, this should be in environment variables)
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET || (() => {
+    console.warn('WARNING: Using default JWT secret. Set JWT_SECRET environment variable in production!');
+    return 'your-secret-key-change-in-production';
+})();
 
 // In-memory user storage
 let users: User[] = [...seedUsers];
@@ -266,11 +269,17 @@ router.post('/request-reset', (req: Request, res: Response) => {
             user.resetTokenExpiry = resetTokenExpiry;
 
             // In production, send reset token via email
-            // For demo/testing, return it in the response
-            res.status(200).json({ 
-                message: 'If the email exists, a reset link has been sent',
-                resetToken // Only for testing - remove in production
-            });
+            // For demo/testing, return it in the response (REMOVE IN PRODUCTION)
+            const response: any = { 
+                message: 'If the email exists, a reset link has been sent'
+            };
+            
+            // Only include resetToken in non-production environments
+            if (process.env.NODE_ENV !== 'production') {
+                response.resetToken = resetToken;
+            }
+            
+            res.status(200).json(response);
             return;
         }
 
