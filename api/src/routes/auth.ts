@@ -109,7 +109,7 @@
  *         description: Invalid token or weak password
  */
 
-import express from 'express';
+import express, { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { User, UserRegistration, UserLogin, PasswordResetRequest, PasswordReset } from '../models/user';
@@ -146,27 +146,30 @@ const generateToken = (userId: number, email: string, isAdmin: boolean): string 
 };
 
 // POST /auth/register - Register a new user
-router.post('/register', async (req, res) => {
+router.post('/register', (req: Request, res: Response) => {
     try {
         const { email, password }: UserRegistration = req.body;
 
         // Validate email
         if (!isValidEmail(email)) {
-            return res.status(400).json({ error: 'Invalid email format' });
+            res.status(400).json({ error: 'Invalid email format' });
+            return;
         }
 
         // Validate password
         if (!isValidPassword(password)) {
-            return res.status(400).json({ error: 'Password must be at least 8 characters long' });
+            res.status(400).json({ error: 'Password must be at least 8 characters long' });
+            return;
         }
 
         // Check if user already exists
         if (users.find(u => u.email === email)) {
-            return res.status(400).json({ error: 'Email already registered' });
+            res.status(400).json({ error: 'Email already registered' });
+            return;
         }
 
-        // Hash password
-        const passwordHash = await bcrypt.hash(password, 10);
+        // Hash password (using sync version)
+        const passwordHash = bcrypt.hashSync(password, 10);
 
         // Create new user
         const newUser: User = {
@@ -195,20 +198,22 @@ router.post('/register', async (req, res) => {
 });
 
 // POST /auth/login - Login with email and password
-router.post('/login', async (req, res) => {
+router.post('/login', (req: Request, res: Response) => {
     try {
         const { email, password }: UserLogin = req.body;
 
         // Find user by email
         const user = users.find(u => u.email === email);
         if (!user) {
-            return res.status(401).json({ error: 'Invalid credentials' });
+            res.status(401).json({ error: 'Invalid credentials' });
+            return;
         }
 
-        // Verify password
-        const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
+        // Verify password (using sync version)
+        const isPasswordValid = bcrypt.compareSync(password, user.passwordHash);
         if (!isPasswordValid) {
-            return res.status(401).json({ error: 'Invalid credentials' });
+            res.status(401).json({ error: 'Invalid credentials' });
+            return;
         }
 
         // Generate token
@@ -229,20 +234,21 @@ router.post('/login', async (req, res) => {
 });
 
 // POST /auth/logout - Logout (client-side token removal)
-router.post('/logout', (req, res) => {
+router.post('/logout', (req: Request, res: Response) => {
     // In a JWT-based system, logout is handled client-side by removing the token
     // This endpoint exists for consistency and potential future server-side token blacklisting
     res.status(200).json({ message: 'Logout successful' });
 });
 
 // POST /auth/request-reset - Request password reset
-router.post('/request-reset', (req, res) => {
+router.post('/request-reset', (req: Request, res: Response) => {
     try {
         const { email }: PasswordResetRequest = req.body;
 
         // Validate email
         if (!isValidEmail(email)) {
-            return res.status(400).json({ error: 'Invalid email format' });
+            res.status(400).json({ error: 'Invalid email format' });
+            return;
         }
 
         // Find user by email
@@ -261,10 +267,11 @@ router.post('/request-reset', (req, res) => {
 
             // In production, send reset token via email
             // For demo/testing, return it in the response
-            return res.status(200).json({ 
+            res.status(200).json({ 
                 message: 'If the email exists, a reset link has been sent',
                 resetToken // Only for testing - remove in production
             });
+            return;
         }
 
         res.status(200).json({ message: 'If the email exists, a reset link has been sent' });
@@ -274,28 +281,31 @@ router.post('/request-reset', (req, res) => {
 });
 
 // POST /auth/reset-password - Reset password with token
-router.post('/reset-password', async (req, res) => {
+router.post('/reset-password', (req: Request, res: Response) => {
     try {
         const { resetToken, newPassword }: PasswordReset = req.body;
 
         // Validate new password
         if (!isValidPassword(newPassword)) {
-            return res.status(400).json({ error: 'Password must be at least 8 characters long' });
+            res.status(400).json({ error: 'Password must be at least 8 characters long' });
+            return;
         }
 
         // Find user with matching reset token
         const user = users.find(u => u.resetToken === resetToken);
         if (!user) {
-            return res.status(400).json({ error: 'Invalid or expired reset token' });
+            res.status(400).json({ error: 'Invalid or expired reset token' });
+            return;
         }
 
         // Check if token is expired
         if (user.resetTokenExpiry && user.resetTokenExpiry < new Date()) {
-            return res.status(400).json({ error: 'Invalid or expired reset token' });
+            res.status(400).json({ error: 'Invalid or expired reset token' });
+            return;
         }
 
-        // Hash new password
-        const passwordHash = await bcrypt.hash(newPassword, 10);
+        // Hash new password (using sync version)
+        const passwordHash = bcrypt.hashSync(newPassword, 10);
 
         // Update user password and clear reset token
         user.passwordHash = passwordHash;
