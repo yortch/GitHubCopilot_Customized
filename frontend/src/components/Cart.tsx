@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useTheme } from "../context/ThemeContext";
+import { TAX_RATE, SHIPPING_COST } from "../constants";
 
 interface CartItemDisplayProps {
   productId: number;
@@ -89,8 +90,8 @@ export default function Cart() {
 
   const pricingDetails = {
     subtotalValue: getTotalPrice(),
-    taxRate: 0.08,
-    shippingCostValue: 0
+    taxRate: TAX_RATE,
+    shippingCostValue: SHIPPING_COST
   };
 
   const taxValue = pricingDetails.subtotalValue * pricingDetails.taxRate;

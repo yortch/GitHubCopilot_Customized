@@ -1,7 +1,8 @@
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useTheme } from "../context/ThemeContext";
+import { TAX_RATE, SHIPPING_COST, ORDER_SUCCESS_REDIRECT_DELAY } from "../constants";
 
 // NOTE: This is a demo checkout form. In production, NEVER handle raw payment card data on the frontend.
 // Use a PCI-DSS compliant payment gateway (Stripe, PayPal, etc.) with proper tokenization.
@@ -22,6 +23,7 @@ export default function Checkout() {
   const navigate = useNavigate();
   const { cartItems, getTotalPrice, clearCart } = useCart();
   const { darkMode } = useTheme();
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const [formData, setFormData] = useState<CheckoutFormData>({
     fullName: "",
@@ -38,6 +40,14 @@ export default function Checkout() {
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
   const handleInputChange = (fieldName: keyof CheckoutFormData, value: string) => {
     setFormData(prevData => ({
       ...prevData,
@@ -47,19 +57,19 @@ export default function Checkout() {
 
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
+    clearCart();
     setShowSuccessModal(true);
     
-    setTimeout(() => {
-      clearCart();
+    timeoutRef.current = setTimeout(() => {
       setShowSuccessModal(false);
       navigate("/products");
-    }, 3000);
+    }, ORDER_SUCCESS_REDIRECT_DELAY);
   };
 
   const calculatePricing = () => {
     const subtotalAmount = getTotalPrice();
-    const taxAmount = subtotalAmount * 0.08;
-    const shippingAmount = 0;
+    const taxAmount = subtotalAmount * TAX_RATE;
+    const shippingAmount = SHIPPING_COST;
     const totalAmount = subtotalAmount + taxAmount + shippingAmount;
     
     return { subtotalAmount, taxAmount, shippingAmount, totalAmount };
