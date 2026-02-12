@@ -9,7 +9,7 @@ interface Product {
   sku: string;
   unit: string;
   supplierId: number;
-  discount?: number;
+  discount?: number; // Expected as decimal (0.1 = 10% off)
 }
 
 interface CartItem extends Product {

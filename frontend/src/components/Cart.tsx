@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useTheme } from "../context/ThemeContext";
-import { useState } from "react";
 
 interface CartItemDisplayProps {
   productId: number;
@@ -67,7 +66,6 @@ export default function Cart() {
   const navigate = useNavigate();
   const { cartItems, updateQuantity, removeFromCart, getTotalPrice } = useCart();
   const { darkMode } = useTheme();
-  const [isProcessing] = useState(false);
 
   const handleItemQuantityUpdate = (productId: number, newQuantity: number) => {
     if (newQuantity <= 0) {
@@ -164,7 +162,7 @@ export default function Cart() {
                 </div>
               </div>
               <div className="space-y-3">
-                <button onClick={goToCheckout} disabled={isProcessing} className="w-full bg-primary hover:bg-accent text-white px-6 py-3 rounded-lg font-medium transition-colors">Proceed to Checkout</button>
+                <button onClick={goToCheckout} className="w-full bg-primary hover:bg-accent text-white px-6 py-3 rounded-lg font-medium transition-colors">Proceed to Checkout</button>
                 <button onClick={continueBrowsing} className={`w-full ${darkMode ? "bg-gray-700 hover:bg-gray-600 text-light" : "bg-gray-200 hover:bg-gray-300 text-gray-800"} px-6 py-3 rounded-lg font-medium transition-colors duration-300`}>Continue Shopping</button>
               </div>
             </div>

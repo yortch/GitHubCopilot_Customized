@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useTheme } from "../context/ThemeContext";
 
+// NOTE: This is a demo checkout form. In production, NEVER handle raw payment card data on the frontend.
+// Use a PCI-DSS compliant payment gateway (Stripe, PayPal, etc.) with proper tokenization.
 interface CheckoutFormData {
   fullName: string;
   email: string;

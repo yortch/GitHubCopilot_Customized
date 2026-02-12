@@ -50,16 +50,14 @@ function ThemedApp() {
 }
 
 function App() {
-  const authWrapper = (children: React.ReactNode) => <AuthProvider>{children}</AuthProvider>;
-  const themeWrapper = (children: React.ReactNode) => <ThemeProvider>{children}</ThemeProvider>;
-  const cartWrapper = (children: React.ReactNode) => <CartProvider>{children}</CartProvider>;
-  
-  return authWrapper(
-    themeWrapper(
-      cartWrapper(
-        <ThemedApp />
-      )
-    )
+  return (
+    <AuthProvider>
+      <ThemeProvider>
+        <CartProvider>
+          <ThemedApp />
+        </CartProvider>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 
