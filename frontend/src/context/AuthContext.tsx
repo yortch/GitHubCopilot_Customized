@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode } from "react";
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -18,7 +18,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // For now, we'll just check the email domain
     if (email && password) {
       setIsLoggedIn(true);
-      setIsAdmin(email.endsWith('@github.com'));
+      setIsAdmin(email.endsWith("@github.com"));
     }
   };
 
@@ -38,7 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }

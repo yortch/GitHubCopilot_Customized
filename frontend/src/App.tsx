@@ -1,14 +1,14 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navigation from './components/Navigation';
-import Welcome from './components/Welcome';
-import About from './components/About';
-import Footer from './components/Footer';
-import Products from './components/entity/product/Products';
-import Login from './components/Login';
-import { AuthProvider } from './context/AuthContext';
-import { ThemeProvider } from './context/ThemeContext';
-import AdminProducts from './components/admin/AdminProducts';
-import { useTheme } from './context/ThemeContext';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navigation from "./components/Navigation";
+import Welcome from "./components/Welcome";
+import About from "./components/About";
+import Footer from "./components/Footer";
+import Products from "./components/entity/product/Products";
+import Login from "./components/Login";
+import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
+import AdminProducts from "./components/admin/AdminProducts";
+import { useTheme } from "./context/ThemeContext";
 
 // Wrapper component to apply theme classes
 function ThemedApp() {
@@ -16,7 +16,7 @@ function ThemedApp() {
   
   return (
     <Router>
-      <div className={`flex flex-col min-h-screen ${darkMode ? 'bg-dark' : 'bg-gray-100'} transition-colors duration-300`}>
+      <div className={`flex flex-col min-h-screen ${darkMode ? "bg-dark" : "bg-gray-100"} transition-colors duration-300`}>
         <Navigation />
         <main className="flex-grow">
           <Routes>
