@@ -152,7 +152,7 @@ export default function Cart() {
                   <span className="text-primary font-medium">FREE</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className={`${darkMode ? "text-gray-400" : "text-gray-600"} transition-colors duration-300`}>Tax (8%)</span>
+                  <span className={`${darkMode ? "text-gray-400" : "text-gray-600"} transition-colors duration-300`}>Tax ({(TAX_RATE * 100).toFixed(0)}%)</span>
                   <span className={`${darkMode ? "text-light" : "text-gray-800"} font-medium transition-colors duration-300`}>${taxValue.toFixed(2)}</span>
                 </div>
                 <div className={`border-t ${darkMode ? "border-gray-700" : "border-gray-200"} pt-4 transition-colors duration-300`}>
