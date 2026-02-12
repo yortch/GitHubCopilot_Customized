@@ -3,34 +3,33 @@ import { useTheme } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
-  const cartData = useCart();
-  const theme = useTheme();
-  const nav = useNavigate();
+  const cart = useCart();
+  const { darkMode } = useTheme();
+  const navigate = useNavigate();
 
-  const isDark = theme.darkMode;
-  const cartItems = cartData.items;
-  const total = cartData.totalPrice;
+  const cartItems = cart.items;
+  const total = cart.totalPrice;
 
   const handleRemove = (id: number) => {
-    cartData.removeFromCart(id);
+    cart.removeFromCart(id);
   };
 
   const handleUpdateQty = (id: number, qty: number) => {
-    cartData.updateQuantity(id, qty);
+    cart.updateQuantity(id, qty);
   };
 
   const handleClearAll = () => {
-    cartData.clearCart();
+    cart.clearCart();
   };
 
   if (cartItems.length === 0) {
     return (
-      <div className={`min-h-screen pt-20 px-4 ${isDark ? "bg-dark" : "bg-gray-100"}`}>
+      <div className={`min-h-screen pt-20 px-4 ${darkMode ? "bg-dark" : "bg-gray-100"}`}>
         <div className="max-w-4xl mx-auto">
-          <h1 className={`text-3xl font-bold mb-8 ${isDark ? "text-light" : "text-gray-800"}`}>Shopping Cart</h1>
-          <div className={`rounded-lg p-8 text-center ${isDark ? "bg-gray-800 text-light" : "bg-white text-gray-800"}`}>
+          <h1 className={`text-3xl font-bold mb-8 ${darkMode ? "text-light" : "text-gray-800"}`}>Shopping Cart</h1>
+          <div className={`rounded-lg p-8 text-center ${darkMode ? "bg-gray-800 text-light" : "bg-white text-gray-800"}`}>
             <p className="text-xl mb-4">Your cart is empty</p>
-            <button onClick={() => nav("/products")} className="bg-primary text-white px-6 py-2 rounded hover:bg-accent">
+            <button onClick={() => navigate("/products")} className="bg-primary text-white px-6 py-2 rounded hover:bg-accent">
               Browse Products
             </button>
           </div>
@@ -40,11 +39,11 @@ export default function Cart() {
   }
 
   return (
-    <div className={`min-h-screen pt-20 pb-16 px-4 ${isDark ? "bg-dark" : "bg-gray-100"}`}>
+    <div className={`min-h-screen pt-20 pb-16 px-4 ${darkMode ? "bg-dark" : "bg-gray-100"}`}>
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className={`text-3xl font-bold ${isDark ? "text-light" : "text-gray-800"}`}>Shopping Cart</h1>
-          <button onClick={handleClearAll} className={`${isDark ? "text-gray-400 hover:text-red-400" : "text-gray-600 hover:text-red-600"}`}>
+          <h1 className={`text-3xl font-bold ${darkMode ? "text-light" : "text-gray-800"}`}>Shopping Cart</h1>
+          <button onClick={handleClearAll} className={`${darkMode ? "text-gray-400 hover:text-red-400" : "text-gray-600 hover:text-red-600"}`}>
             Clear All
           </button>
         </div>
@@ -55,12 +54,12 @@ export default function Cart() {
             const lineTotal = finalPrice * product.quantity;
 
             return (
-              <div key={product.productId} className={`rounded-lg p-4 shadow ${isDark ? "bg-gray-800" : "bg-white"}`}>
+              <div key={product.productId} className={`rounded-lg p-4 shadow ${darkMode ? "bg-gray-800" : "bg-white"}`}>
                 <div className="flex items-center gap-4">
-                  <img src={`/${product.imgName}`} alt={product.name} className={`w-20 h-20 object-contain rounded ${isDark ? "bg-gray-700" : "bg-gray-100"}`} />
+                  <img src={`/${product.imgName}`} alt={product.name} className={`w-20 h-20 object-contain rounded ${darkMode ? "bg-gray-700" : "bg-gray-100"}`} />
                   
                   <div className="flex-grow">
-                    <h3 className={`font-semibold ${isDark ? "text-light" : "text-gray-800"}`}>{product.name}</h3>
+                    <h3 className={`font-semibold ${darkMode ? "text-light" : "text-gray-800"}`}>{product.name}</h3>
                     <div className="mt-1">
                       {product.discount ? (
                         <div>
@@ -74,17 +73,17 @@ export default function Cart() {
                   </div>
 
                   <div className="flex items-center gap-4">
-                    <div className={`flex items-center gap-2 rounded px-2 py-1 ${isDark ? "bg-gray-700" : "bg-gray-200"}`}>
+                    <div className={`flex items-center gap-2 rounded px-2 py-1 ${darkMode ? "bg-gray-700" : "bg-gray-200"}`}>
                       <button onClick={() => handleUpdateQty(product.productId, product.quantity - 1)} className="w-7 h-7 hover:text-primary">-</button>
                       <span className="min-w-[30px] text-center">{product.quantity}</span>
                       <button onClick={() => handleUpdateQty(product.productId, product.quantity + 1)} className="w-7 h-7 hover:text-primary">+</button>
                     </div>
                     
                     <div className="min-w-[70px] text-right">
-                      <span className={`font-semibold ${isDark ? "text-light" : "text-gray-800"}`}>${lineTotal.toFixed(2)}</span>
+                      <span className={`font-semibold ${darkMode ? "text-light" : "text-gray-800"}`}>${lineTotal.toFixed(2)}</span>
                     </div>
 
-                    <button onClick={() => handleRemove(product.productId)} className={`${isDark ? "text-gray-400 hover:text-red-400" : "text-gray-600 hover:text-red-600"}`}>
+                    <button onClick={() => handleRemove(product.productId)} className={`${darkMode ? "text-gray-400 hover:text-red-400" : "text-gray-600 hover:text-red-600"}`}>
                       ✕
                     </button>
                   </div>
@@ -94,16 +93,16 @@ export default function Cart() {
           })}
         </div>
 
-        <div className={`rounded-lg p-6 shadow ${isDark ? "bg-gray-800" : "bg-white"}`}>
+        <div className={`rounded-lg p-6 shadow ${darkMode ? "bg-gray-800" : "bg-white"}`}>
           <div className="flex justify-between mb-4">
-            <span className={`text-xl font-semibold ${isDark ? "text-light" : "text-gray-800"}`}>Total</span>
+            <span className={`text-xl font-semibold ${darkMode ? "text-light" : "text-gray-800"}`}>Total</span>
             <span className="text-2xl font-bold text-primary">${total.toFixed(2)}</span>
           </div>
           <div className="flex gap-4">
-            <button onClick={() => nav("/products")} className={`flex-1 px-6 py-3 rounded ${isDark ? "bg-gray-700 hover:bg-gray-600 text-light" : "bg-gray-200 hover:bg-gray-300 text-gray-800"}`}>
+            <button onClick={() => navigate("/products")} className={`flex-1 px-6 py-3 rounded ${darkMode ? "bg-gray-700 hover:bg-gray-600 text-light" : "bg-gray-200 hover:bg-gray-300 text-gray-800"}`}>
               Continue Shopping
             </button>
-            <button onClick={() => nav("/checkout")} className="flex-1 bg-primary hover:bg-accent text-white px-6 py-3 rounded">
+            <button onClick={() => navigate("/checkout")} className="flex-1 bg-primary hover:bg-accent text-white px-6 py-3 rounded">
               Checkout
             </button>
           </div>
