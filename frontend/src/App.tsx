@@ -24,13 +24,11 @@ const ROUTE_PATHS = {
 };
 
 function ThemedApp() {
-  const themeState = useTheme();
-  const isDarkTheme = themeState.darkMode;
-  const backgroundClass = isDarkTheme ? 'bg-dark' : 'bg-gray-100';
+  const { darkMode } = useTheme();
   
   return (
     <Router>
-      <div className={`flex flex-col min-h-screen ${backgroundClass} transition-colors duration-300`}>
+      <div className={`flex flex-col min-h-screen ${darkMode ? 'bg-dark' : 'bg-gray-100'} transition-colors duration-300`}>
         <Navigation />
         <main className="flex-grow">
           <Routes>

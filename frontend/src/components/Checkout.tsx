@@ -48,9 +48,9 @@ export default function Checkout() {
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
     setShowSuccessModal(true);
-    clearCart();
     
     setTimeout(() => {
+      clearCart();
       setShowSuccessModal(false);
       navigate("/products");
     }, 3000);
