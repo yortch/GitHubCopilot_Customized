@@ -1,11 +1,11 @@
-import React from 'react';
-import { useTheme } from '../context/ThemeContext';
+import React from "react";
+import { useTheme } from "../context/ThemeContext";
 
 const Footer: React.FC = () => {
   const { darkMode } = useTheme();
   
   return (
-    <footer className={`${darkMode ? 'bg-gray-900 text-gray-300' : 'bg-gray-200 text-gray-700'} py-8 transition-colors duration-300`}>
+    <footer className={`${darkMode ? "bg-gray-900 text-gray-300" : "bg-gray-200 text-gray-700"} py-8 transition-colors duration-300`}>
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About Section */}
@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className={`mt-8 pt-8 ${darkMode ? 'border-gray-700' : 'border-gray-300'} border-t text-center text-sm transition-colors duration-300`}>
+        <div className={`mt-8 pt-8 ${darkMode ? "border-gray-700" : "border-gray-300"} border-t text-center text-sm transition-colors duration-300`}>
           <p>Copyright © 2025 OctoCAT Supply. All Rights Reserved</p>
         </div>
       </div>
