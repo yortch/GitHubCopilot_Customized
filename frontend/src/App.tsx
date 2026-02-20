@@ -16,7 +16,7 @@ function ThemedApp() {
   
   return (
     <Router>
-      <div className={`flex flex-col min-h-screen ${darkMode ? 'bg-dark' : 'bg-gray-100'} transition-colors duration-300`}>
+      <div className={`grain-overlay flex flex-col min-h-screen ${darkMode ? "bg-dark" : "bg-light"} transition-colors duration-300`}>
         <Navigation />
         <main className="flex-grow">
           <Routes>
