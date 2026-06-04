@@ -4,18 +4,7 @@ import { useQuery } from 'react-query';
 import { api } from '../../../api/config';
 import { useTheme } from '../../../context/ThemeContext';
 import { useCart } from '../../../context/CartContext';
-
-interface Product {
-  productId: number;
-  name: string;
-  description: string;
-  price: number;
-  imgName: string;
-  sku: string;
-  unit: string;
-  supplierId: number;
-  discount?: number;
-}
+import type { Product } from '../../../types/product';
 
 const fetchProducts = async (): Promise<Product[]> => {
   const { data } = await axios.get(`${api.baseURL}${api.endpoints.products}`);
@@ -27,6 +16,7 @@ export default function Products() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
   const { data: products, isLoading, error } = useQuery('products', fetchProducts);
   const { darkMode } = useTheme();
   const { addToCart } = useCart();
@@ -43,22 +33,20 @@ export default function Products() {
     }));
   };
 
-  const handleAddToCart = (product: Product) => {
-    const quantity = quantities[product.productId] || 0;
+  const handleAddToCart = (productId: number) => {
+    const quantity = quantities[productId] || 0;
+    const product = products?.find((item) => item.productId === productId);
+
     if (quantity > 0) {
-      addToCart(
-        {
-          productId: product.productId,
-          name: product.name,
-          price: product.price,
-          imgName: product.imgName,
-          discount: product.discount,
-        },
-        quantity
-      );
+      if (!product) {
+        return;
+      }
+
+      addToCart(product, quantity);
+      setStatusMessage(`Added ${quantity} ${product.name} item(s) to cart.`);
       setQuantities(prev => ({
         ...prev,
-        [product.productId]: 0
+        [productId]: 0
       }));
     }
   };
@@ -95,6 +83,21 @@ export default function Products() {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col space-y-6">
           <h1 className={`text-3xl font-bold ${darkMode ? 'text-light' : 'text-gray-800'} transition-colors duration-300`}>Products</h1>
+
+          {statusMessage && (
+            <div className={`rounded-lg border px-4 py-3 ${darkMode ? 'border-gray-700 bg-gray-900 text-gray-200' : 'border-green-200 bg-green-50 text-green-800'} transition-colors duration-300`}>
+              <div className="flex items-center justify-between gap-3">
+                <span>{statusMessage}</span>
+                <button
+                  type="button"
+                  onClick={() => setStatusMessage('')}
+                  className="text-sm font-semibold text-primary hover:text-accent transition-colors"
+                >
+                  Dismiss
+                </button>
+              </div>
+            </div>
+          )}
           
           <div className="relative">
             <input
@@ -179,7 +182,7 @@ export default function Products() {
                         </button>
                       </div>
                       <button 
-                        onClick={() => handleAddToCart(product)}
+                        onClick={() => handleAddToCart(product.productId)}
                         className={`px-4 py-2 rounded-lg transition-colors ${
                           quantities[product.productId] 
                             ? 'bg-primary hover:bg-accent text-white' 
