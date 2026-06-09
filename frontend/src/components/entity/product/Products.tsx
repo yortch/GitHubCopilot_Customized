@@ -3,18 +3,8 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import { api } from '../../../api/config';
 import { useTheme } from '../../../context/ThemeContext';
-
-interface Product {
-  productId: number;
-  name: string;
-  description: string;
-  price: number;
-  imgName: string;
-  sku: string;
-  unit: string;
-  supplierId: number;
-  discount?: number;
-}
+import { useCart } from '../../../context/CartContext';
+import type { Product } from '../../../types/product';
 
 const fetchProducts = async (): Promise<Product[]> => {
   const { data } = await axios.get(`${api.baseURL}${api.endpoints.products}`);
@@ -26,8 +16,10 @@ export default function Products() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
   const { data: products, isLoading, error } = useQuery('products', fetchProducts);
   const { darkMode } = useTheme();
+  const { addToCart } = useCart();
 
   const filteredProducts = products?.filter(product => 
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -43,9 +35,15 @@ export default function Products() {
 
   const handleAddToCart = (productId: number) => {
     const quantity = quantities[productId] || 0;
+    const product = products?.find((item) => item.productId === productId);
+
     if (quantity > 0) {
-      // TODO: Implement cart functionality
-      alert(`Added ${quantity} items to cart`);
+      if (!product) {
+        return;
+      }
+
+      addToCart(product, quantity);
+      setStatusMessage(`Added ${quantity} ${product.name} item(s) to cart.`);
       setQuantities(prev => ({
         ...prev,
         [productId]: 0
@@ -85,6 +83,21 @@ export default function Products() {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col space-y-6">
           <h1 className={`text-3xl font-bold ${darkMode ? 'text-light' : 'text-gray-800'} transition-colors duration-300`}>Products</h1>
+
+          {statusMessage && (
+            <div className={`rounded-lg border px-4 py-3 ${darkMode ? 'border-gray-700 bg-gray-900 text-gray-200' : 'border-green-200 bg-green-50 text-green-800'} transition-colors duration-300`}>
+              <div className="flex items-center justify-between gap-3">
+                <span>{statusMessage}</span>
+                <button
+                  type="button"
+                  onClick={() => setStatusMessage('')}
+                  className="text-sm font-semibold text-primary hover:text-accent transition-colors"
+                >
+                  Dismiss
+                </button>
+              </div>
+            </div>
+          )}
           
           <div className="relative">
             <input
