@@ -1,14 +1,17 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navigation from './components/Navigation';
-import Welcome from './components/Welcome';
-import About from './components/About';
-import Footer from './components/Footer';
-import Products from './components/entity/product/Products';
-import Login from './components/Login';
-import { AuthProvider } from './context/AuthContext';
-import { ThemeProvider } from './context/ThemeContext';
-import AdminProducts from './components/admin/AdminProducts';
-import { useTheme } from './context/ThemeContext';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navigation from "./components/Navigation";
+import Welcome from "./components/Welcome";
+import About from "./components/About";
+import Footer from "./components/Footer";
+import Products from "./components/entity/product/Products";
+import Login from "./components/Login";
+import Cart from "./components/Cart";
+import Checkout from "./components/Checkout";
+import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
+import { CartProvider } from "./context/CartContext";
+import AdminProducts from "./components/admin/AdminProducts";
+import { useTheme } from "./context/ThemeContext";
 
 // Wrapper component to apply theme classes
 function ThemedApp() {
@@ -24,6 +27,8 @@ function ThemedApp() {
             <Route path="/about" element={<About />} />
             <Route path="/products" element={<Products />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
             <Route path="/admin/products" element={<AdminProducts />} />
           </Routes>
         </main>
@@ -37,7 +42,9 @@ function App() {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <ThemedApp />
+        <CartProvider>
+          <ThemedApp />
+        </CartProvider>
       </ThemeProvider>
     </AuthProvider>
   );
