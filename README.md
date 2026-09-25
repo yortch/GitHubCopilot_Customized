@@ -124,6 +124,12 @@ Or use the VS Code tasks:
 - `Cmd/Ctrl + Shift + P` -> `Run Task` -> `Build All`
 - Use the Debug panel to run `Start API & Frontend`
 
+### Tests and coverage
+
+Run `npm test` for both nonwatch suites, or `npm run test:coverage --workspaces` to enforce coverage. The API gate covers all route handlers; the frontend gate covers API configuration, auth and theme contexts, login, catalog, product form, and admin product management. Both require at least 85% statements, lines and functions, and 80% branches. CI also runs both builds and frontend lint.
+
+After `npm install`, Husky installs a pre-push hook that runs the same coverage gate. A failed test or unmet threshold blocks the push; GitHub Actions runs the gate again on push and pull request. Run `npm run prepare` to reinstall the hook in an existing checkout. Set `HUSKY=0` for a one-off push without local hooks when necessary; CI remains the required gate.
+
 ## 🛠️ MCP Server Setup (Optional)
 
 Use VS Code command palette:

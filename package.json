@@ -14,12 +14,14 @@
     "dev:frontend": "npm run dev --workspace=frontend",
     "dev": "concurrently \"npm run dev:api\" \"npm run dev:frontend\"",
     "test": "npm run test --workspaces",
+    "prepare": "node .husky/install.mjs",
     "test:api": "npm run test --workspace=api",
     "test:frontend": "npm run test --workspace=frontend",
     "lint": "npm run lint --workspace=frontend"
   },
   "devDependencies": {
-    "concurrently": "^6.2.1"
+    "concurrently": "^6.2.1",
+    "husky": "^9.1.7"
   },
   "license": "MIT",
   "engines": {
