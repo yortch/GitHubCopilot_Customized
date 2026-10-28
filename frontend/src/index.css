@@ -18,6 +18,11 @@ body {
   min-height: 100vh;
 }
 
+.storefront-nav :is(a, button):focus-visible {
+  outline: 2px solid #76B852;
+  outline-offset: 2px;
+}
+
 /* Custom Scrollbar - Dark Mode */
 .dark ::-webkit-scrollbar {
   width: 8px;

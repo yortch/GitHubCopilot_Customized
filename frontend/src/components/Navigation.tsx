@@ -2,16 +2,21 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useState } from 'react';
+import { useCart } from '../context/useCart';
+import { getCartTotals } from '../cart/cart';
 
 export default function Navigation() {
   const { isLoggedIn, isAdmin, logout } = useAuth();
   const { darkMode, toggleTheme } = useTheme();
   const [adminMenuOpen, setAdminMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { cart } = useCart();
+  const { quantity } = getCartTotals(cart);
 
   return (
-    <nav className={`${darkMode ? 'bg-dark/95' : 'bg-white/95'} backdrop-blur-sm fixed w-full z-50 shadow-md transition-colors duration-300`}>
+    <nav className={`storefront-nav ${darkMode ? 'bg-dark/95' : 'bg-white/95'} backdrop-blur-sm sticky top-0 w-full z-50 shadow-md transition-colors duration-300`}>
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex flex-wrap items-center justify-between gap-2 min-h-16 py-2">
           <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center">
               <img 
@@ -67,7 +72,16 @@ export default function Navigation() {
               )}
             </div>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+            <Link to="/cart" aria-label={`Shopping cart, ${quantity} items`} className={`flex items-center gap-1 px-2 py-2 rounded-md text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary ${darkMode ? 'text-light' : 'text-gray-700'}`}>
+              <svg aria-hidden="true" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l3 12h10l3-9H6M9 20h.01M18 20h.01" />
+              </svg>
+              <span>Cart ({quantity})</span>
+            </Link>
+            <button type="button" aria-expanded={mobileMenuOpen} aria-controls="storefront-mobile-nav" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className={`md:hidden p-2 rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary ${darkMode ? 'text-light' : 'text-gray-700'}`}>
+              Menu
+            </button>
             <button
               onClick={toggleTheme}
               className="p-2 rounded-full focus:outline-none transition-colors"
@@ -105,6 +119,14 @@ export default function Navigation() {
               </Link>
             )}
           </div>
+          {mobileMenuOpen && (
+            <div id="storefront-mobile-nav" className={`md:hidden flex flex-wrap gap-4 py-3 ${darkMode ? 'text-light' : 'text-gray-700'}`}>
+              <Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link>
+              <Link to="/products" onClick={() => setMobileMenuOpen(false)}>Products</Link>
+              <Link to="/about" onClick={() => setMobileMenuOpen(false)}>About us</Link>
+              {isAdmin && <Link to="/admin/products" onClick={() => setMobileMenuOpen(false)}>Manage Products</Link>}
+            </div>
+          )}
         </div>
       </div>
     </nav>

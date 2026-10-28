@@ -1,0 +1,37 @@
+.cart-page .cart-action {
+  @apply rounded-lg bg-primary px-4 py-2 font-semibold text-gray-900 hover:bg-accent;
+}
+
+.cart-page :is(input, button, a):focus-visible {
+  @apply outline outline-2 outline-offset-2 outline-primary;
+}
+
+@media (max-width: 767px) {
+  .cart-table,
+  .cart-table tbody,
+  .cart-table tr {
+    display: block;
+  }
+
+  .cart-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .cart-table :is(td, th[scope='row']) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    align-items: center;
+    gap: 1rem;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  .cart-table :is(td, th[scope='row'])::before {
+    content: attr(data-label);
+    font-weight: 600;
+  }
+}

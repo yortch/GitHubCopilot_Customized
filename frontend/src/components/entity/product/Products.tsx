@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import { api } from '../../../api/config';
 import { useTheme } from '../../../context/ThemeContext';
+import { useCart } from '../../../context/useCart';
+import { formatMoney, getUnitPriceCents } from '../../../cart/cart';
+import CartFeedback from '../../CartFeedback';
 
 interface Product {
   productId: number;
@@ -28,6 +31,7 @@ export default function Products() {
   const [showModal, setShowModal] = useState(false);
   const { data: products, isLoading, error } = useQuery('products', fetchProducts);
   const { darkMode } = useTheme();
+  const { addItem } = useCart();
 
   const filteredProducts = products?.filter(product => 
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -41,11 +45,11 @@ export default function Products() {
     }));
   };
 
-  const handleAddToCart = (productId: number) => {
+  const handleAddToCart = (product: Product) => {
+    const productId = product.productId;
     const quantity = quantities[productId] || 0;
     if (quantity > 0) {
-      // TODO: Implement cart functionality
-      alert(`Added ${quantity} items to cart`);
+      addItem(product, quantity);
       setQuantities(prev => ({
         ...prev,
         [productId]: 0
@@ -60,7 +64,7 @@ export default function Products() {
 
   if (isLoading) {
     return (
-      <div className={`min-h-screen ${darkMode ? 'bg-dark' : 'bg-gray-100'} pt-20 px-4 transition-colors duration-300`}>
+      <div className={`min-h-screen ${darkMode ? 'bg-dark' : 'bg-gray-100'} pt-6 px-4 transition-colors duration-300`}>
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-primary"></div>
@@ -72,7 +76,7 @@ export default function Products() {
 
   if (error) {
     return (
-      <div className={`min-h-screen ${darkMode ? 'bg-dark' : 'bg-gray-100'} pt-20 px-4 transition-colors duration-300`}>
+      <div className={`min-h-screen ${darkMode ? 'bg-dark' : 'bg-gray-100'} pt-6 px-4 transition-colors duration-300`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-red-500 text-center">Failed to fetch products</div>
         </div>
@@ -81,10 +85,11 @@ export default function Products() {
   }
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-dark' : 'bg-gray-100'} pt-20 pb-16 px-4 transition-colors duration-300`}>
+    <div className={`min-h-screen ${darkMode ? 'bg-dark' : 'bg-gray-100'} pt-6 pb-16 px-4 transition-colors duration-300`}>
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col space-y-6">
           <h1 className={`text-3xl font-bold ${darkMode ? 'text-light' : 'text-gray-800'} transition-colors duration-300`}>Products</h1>
+          <CartFeedback />
           
           <div className="relative">
             <input
@@ -135,10 +140,10 @@ export default function Products() {
                       {product.discount ? (
                         <div>
                           <span className="text-gray-500 line-through text-sm mr-2">${product.price.toFixed(2)}</span>
-                          <span className="text-primary text-xl font-bold">${(product.price * (1 - product.discount)).toFixed(2)}</span>
+                          <span className="text-primary text-xl font-bold">{formatMoney(getUnitPriceCents(product))}</span>
                         </div>
                       ) : (
-                        <span className="text-primary text-xl font-bold">${product.price.toFixed(2)}</span>
+                        <span className="text-primary text-xl font-bold">{formatMoney(getUnitPriceCents(product))}</span>
                       )}
                     </div>
                     
@@ -169,7 +174,7 @@ export default function Products() {
                         </button>
                       </div>
                       <button 
-                        onClick={() => handleAddToCart(product.productId)}
+                        onClick={() => handleAddToCart(product)}
                         className={`px-4 py-2 rounded-lg transition-colors ${
                           quantities[product.productId] 
                             ? 'bg-primary hover:bg-accent text-white' 

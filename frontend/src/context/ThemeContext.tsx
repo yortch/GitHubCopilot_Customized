@@ -14,12 +14,20 @@ export const useTheme = () => {
 // Main component export
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [darkMode, setDarkMode] = useState(() => {
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme ? savedTheme === 'dark' : false;
+    try {
+      return localStorage.getItem('theme') === 'dark';
+    } catch (error) {
+      console.error('Unable to restore the theme preference:', error);
+      return false;
+    }
   });
 
   useEffect(() => {
-    localStorage.setItem('theme', darkMode ? 'dark' : 'light');
+    try {
+      localStorage.setItem('theme', darkMode ? 'dark' : 'light');
+    } catch (error) {
+      console.error('Unable to save the theme preference:', error);
+    }
     
     if (darkMode) {
       document.documentElement.classList.add('dark');

@@ -124,6 +124,29 @@ Or use the VS Code tasks:
 - `Cmd/Ctrl + Shift + P` -> `Run Task` -> `Build All`
 - Use the Debug panel to run `Start API & Frontend`
 
+## Shopping cart
+
+Select quantities on Products and use Add to Cart, then open Cart from the
+navigation (also available on mobile). Repeated additions merge by product.
+Quantity edits take effect when you select Update Cart; quantities must be positive
+whole numbers. Removing the last item returns to the empty state with no shipping.
+
+The cart saves product names, images, discounted unit prices, quantities, and the
+active coupon in this browser's localStorage (`octocat-cart-v1`). It survives
+navigation, reloads, and browser restarts, but is not synchronized between devices
+or tabs. If saved data is malformed or storage is unavailable, the cart displays a
+warning rather than claiming persistence; you can retry saving. Prices are a
+snapshot from the most recent addition of each product, not an inventory or price
+reservation.
+
+`SAVE5` (case-sensitive, no surrounding spaces) takes 5% off the subtotal once.
+Shipping is $10 for a non-empty cart and $0 for an empty cart. Discounted unit
+prices and coupon discounts are rounded to cents; all totals are shown in USD.
+Checkout remains disabled: no orders or payments are submitted.
+
+Run frontend tests with `npm run test:frontend`, the frontend build with
+`npm run build --workspace=frontend`, and lint with `npm run lint`.
+
 ## 🛠️ MCP Server Setup (Optional)
 
 Use VS Code command palette:
