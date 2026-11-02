@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
-import { useState } from 'react';
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
+import { useState } from "react";
 
 export default function Navigation() {
   const { isLoggedIn, isAdmin, logout } = useAuth();
@@ -9,7 +9,7 @@ export default function Navigation() {
   const [adminMenuOpen, setAdminMenuOpen] = useState(false);
 
   return (
-    <nav className={`${darkMode ? 'bg-dark/95' : 'bg-white/95'} backdrop-blur-sm fixed w-full z-50 shadow-md transition-colors duration-300`}>
+    <nav className={`${darkMode ? "bg-dark/95" : "bg-white/95"} backdrop-blur-sm fixed w-full z-50 shadow-md transition-colors duration-300`}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0 flex items-center">
@@ -20,25 +20,25 @@ export default function Navigation() {
                 className="h-8 w-auto"
               />
               <div className="ml-2">
-                <span className={`text-xl font-bold ${darkMode ? 'text-light' : 'text-gray-800'}`}>OctoCAT Supply</span>
+                <span className={`text-xl font-bold ${darkMode ? "text-light" : "text-gray-800"}`}>OctoCAT Supply</span>
                 <span className="block text-xs text-primary">Smart Cat Tech, Powered by AI</span>
               </div>
             </Link>
           </div>
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
-              <Link to="/" className={`${darkMode ? 'text-light hover:text-primary' : 'text-gray-700 hover:text-primary'} px-3 py-2 rounded-md text-sm font-medium transition-colors`}>Home</Link>
-              <Link to="/products" className={`${darkMode ? 'text-light hover:text-primary' : 'text-gray-700 hover:text-primary'} px-3 py-2 rounded-md text-sm font-medium transition-colors`}>Products</Link>
-              <Link to="/about" className={`${darkMode ? 'text-light hover:text-primary' : 'text-gray-700 hover:text-primary'} px-3 py-2 rounded-md text-sm font-medium transition-colors`}>About us</Link>
+              <Link to="/" className={`${darkMode ? "text-light hover:text-primary" : "text-gray-700 hover:text-primary"} px-3 py-2 rounded-md text-sm font-medium transition-colors`}>Home</Link>
+              <Link to="/products" className={`${darkMode ? "text-light hover:text-primary" : "text-gray-700 hover:text-primary"} px-3 py-2 rounded-md text-sm font-medium transition-colors`}>Products</Link>
+              <Link to="/about" className={`${darkMode ? "text-light hover:text-primary" : "text-gray-700 hover:text-primary"} px-3 py-2 rounded-md text-sm font-medium transition-colors`}>About us</Link>
               {isAdmin && (
                 <div className="relative">
                   <button 
                     onClick={() => setAdminMenuOpen(!adminMenuOpen)}
-                    className={`${darkMode ? 'text-light hover:text-primary' : 'text-gray-700 hover:text-primary'} px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors`}
+                    className={`${darkMode ? "text-light hover:text-primary" : "text-gray-700 hover:text-primary"} px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors`}
                   >
                     Admin
                     <svg 
-                      className={`ml-1 h-4 w-4 transform ${adminMenuOpen ? 'rotate-180' : ''} transition-transform`}
+                      className={`ml-1 h-4 w-4 transform ${adminMenuOpen ? "rotate-180" : ""} transition-transform`}
                       fill="none" 
                       strokeLinecap="round" 
                       strokeLinejoin="round" 
@@ -50,11 +50,11 @@ export default function Navigation() {
                     </svg>
                   </button>
                   {adminMenuOpen && (
-                    <div className={`absolute right-0 mt-2 w-48 rounded-md shadow-lg ${darkMode ? 'bg-dark' : 'bg-white'} ring-1 ring-black ring-opacity-5 transition-colors`}>
+                    <div className={`absolute right-0 mt-2 w-48 rounded-md shadow-lg ${darkMode ? "bg-dark" : "bg-white"} ring-1 ring-black ring-opacity-5 transition-colors`}>
                       <div className="py-1">
                         <Link
                           to="/admin/products"
-                          className={`block px-4 py-2 text-sm ${darkMode ? 'text-light hover:bg-primary hover:text-white' : 'text-gray-700 hover:bg-primary hover:text-white'} transition-colors`}
+                          className={`block px-4 py-2 text-sm ${darkMode ? "text-light hover:bg-primary hover:text-white" : "text-gray-700 hover:bg-primary hover:text-white"} transition-colors`}
                           onClick={() => setAdminMenuOpen(false)}
                         >
                           Manage Products
@@ -85,13 +85,13 @@ export default function Navigation() {
             </button>
             {isLoggedIn ? (
               <>
-                <span className={`${darkMode ? 'text-light' : 'text-gray-700'} text-sm transition-colors`}>
+                <span className={`${darkMode ? "text-light" : "text-gray-700"} text-sm transition-colors`}>
                   {isAdmin && <span className="text-primary">(Admin) </span>}
                   Welcome!
                 </span>
                 <button 
                   onClick={logout}
-                  className={`${darkMode ? 'text-light hover:text-primary' : 'text-gray-700 hover:text-primary'} px-3 py-2 rounded-md text-sm font-medium transition-colors`}
+                  className={`${darkMode ? "text-light hover:text-primary" : "text-gray-700 hover:text-primary"} px-3 py-2 rounded-md text-sm font-medium transition-colors`}
                 >
                   Logout
                 </button>
