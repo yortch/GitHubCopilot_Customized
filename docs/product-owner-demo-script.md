@@ -143,28 +143,20 @@ Create above epic and user stories into my demo-project.
 
 ### Presenter Actions
 
-1. Review the story's scope and acceptance criteria once more. Resolve implementation-blocking product decisions before delegation.
-2. Select the work item's **GitHub Copilot** icon or dropdown.
-3. Choose **Create a pull request with GitHub Copilot** (the exact label may vary).
-4. Select the connected **GitHub repository** and the rehearsed **base branch**.
-5. Add the following implementation guidance, adjusting the story scope as needed:
+1. Ask the presenter to open the shopping cart user story in Azure Boards.
+2. Review the story's scope and acceptance criteria, then click **Create a pull request with GitHub Copilot**.
+3. Show that a GitHub Copilot agent session is created in GitHub for the story.
+4. Once the agent session completes, show the pull request it created in GitHub.
+5. Return to the Azure Boards user story and show the pull request link added to it.
+6. Continue to section 6 while the agent runs. Return to the live session, pull request, and updated user story during wrap-up.
 
-   ```text
-   Implement this shopping cart story against its acceptance criteria. Use docs/design/cart.png as the layout reference. Keep checkout implementation out of scope for this story. Follow repository conventions, add or update relevant tests, and summarize validation results and unresolved assumptions in the pull request.
-   ```
-
-6. Select **Create** to start the cloud-agent operation.
-7. Show the work item's progress and linked GitHub artifacts as they become available.
-8. Explain that the agent receives work item context, including its description, acceptance criteria, and comments. Keep that content appropriate for the connected repository.
-9. Continue to section 6 while the agent runs. Return to the live result during wrap-up if ready.
-
-**Expected outcome:** A cloud-agent run associated with the work item, followed by linked implementation artifacts and a draft pull request when successful.
+**Expected outcome:** The work item starts a GitHub Copilot agent session. When the session completes successfully, it creates a pull request in GitHub and adds the pull request link to the Azure Boards user story.
 
 **Talk track**
 
-> "We are delegating implementation, not delegating acceptance. The agent can produce a draft pull request; people still inspect the changes, validation evidence, and business behavior before approval."
+> "The user story launches a GitHub Copilot agent session. When the work is complete, the agent creates a pull request and links it back to the story. We are delegating implementation, not acceptance: people still inspect the changes, validation evidence, and business behavior before approval."
 
-**Fallback:** If the action is absent, verify the GitHub App connection, approved permissions, eligible access, and supported work item type. If the run is slow or fails, show the labeled prepared run and draft pull request. Do not present prepared output as the live result, and do not merge merely to finish the demo.
+**Fallback:** If the action is absent, verify the GitHub connection, approved permissions, eligible access, and supported work item type. If the session is slow or fails, explain that the PR and work-item link are created only after successful completion; use a clearly labeled prepared example if needed. Do not present prepared output as the live result, and do not merge merely to finish the demo.
 
 ## 6. Custom Product Owner Agents, Part 2
 
