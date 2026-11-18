@@ -1,0 +1,12 @@
+paths:
+  evals:
+    - evals
+  skills:
+    - .github/skills
+  results: .copilot/evals/results
+  evalFilenames:
+    - "*.eval.yaml"
+suites:
+  all:
+    description: All discovered evals
+    filter: {}
